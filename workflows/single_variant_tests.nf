@@ -52,11 +52,12 @@ workflow SINGLE_VARIANT_TESTS {
         imputed_plink2_ch = CHUNKING.out.imputed_plink2_ch
     }
 
-    genotyped_final_ch = Channel.empty()
-    genotyped_filtered_snplist_ch = Channel.empty()
-    genotyped_filtered_id_ch = Channel.empty()
-   
-    if (!skip_predictions) {
+    // AoU files are qc'ed and pruned
+    genotyped_final_ch = genotyped_plink_ch //Channel.empty()
+    genotyped_filtered_snplist_ch = [] //Channel.empty()
+    genotyped_filtered_id_ch = [] // Channel.empty()
+
+    if (false) {  // !skip_predictions
 
         QUALITY_CONTROL(genotyped_plink_ch)
         genotyped_final_ch = QUALITY_CONTROL.out.genotyped_filtered_files_ch
@@ -71,7 +72,8 @@ workflow SINGLE_VARIANT_TESTS {
         } 
             
     }
-       
+
+     
     REGENIE (
         genotyped_final_ch,
         genotyped_filtered_snplist_ch,
@@ -92,7 +94,7 @@ workflow SINGLE_VARIANT_TESTS {
     regenie_step1_parsed_logs_ch = REGENIE.out.regenie_step1_parsed_logs_ch
     regenie_step1_out_ch = REGENIE.out.regenie_step1_out_ch
 
-    if (!run_interaction_tests) {
+    if (false) { // !run_interaction_tests
 
         ANNOTATION (
             regenie_step2_out,
@@ -109,7 +111,7 @@ workflow SINGLE_VARIANT_TESTS {
     MERGE_RESULTS (
         regenie_step2_by_phenotype.groupTuple()
     )
-
+/*
     LIFT_OVER (
         MERGE_RESULTS.out.results_merged_regenie_only,
         association_build
@@ -129,6 +131,7 @@ workflow SINGLE_VARIANT_TESTS {
         regenie_step2_parsed_logs,
         run_interaction_tests
     )
+*/
 }
 
 workflow.onComplete {

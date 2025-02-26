@@ -11,7 +11,7 @@ process QC_FILTER_GENOTYPED {
     path "${genotyped_plink_filename}.qc.id", emit: genotyped_filtered_id_ch
     tuple val("${genotyped_plink_filename}.qc"), path("${genotyped_plink_filename}.qc.bim"), path("${genotyped_plink_filename}.qc.bed"),path("${genotyped_plink_filename}.qc.fam"), emit: genotyped_filtered_files_ch
 
-
+    script:
     """
     plink2 \
         --bfile ${genotyped_plink_filename} \
