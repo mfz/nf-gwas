@@ -24,7 +24,6 @@ process REGENIE_STEP1_SPLIT {
     def step1_optional = params.regenie_step1_optional  ? "$params.regenie_step1_optional":'' 
     def keep = id ? "--keep ${id}" : ''
     def extract = snplist ? "--extract ${snplist}" : ''
-  
     """
     # qcfiles path required for keep and extract (but not actually set below)
     regenie \
