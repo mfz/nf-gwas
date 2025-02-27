@@ -22,14 +22,16 @@ process REGENIE_STEP1_SPLIT {
     def refFirst = params.regenie_ref_first  ? "--ref-first" : ''
     def condition_list = params.regenie_condition_list ? "--condition-list $condition_list_file" : ''
     def step1_optional = params.regenie_step1_optional  ? "$params.regenie_step1_optional":'' 
-  
+    def extract = snplist ? "--extract ${snplist}" : ''
+    def keep = id ? "--keep ${id}" : ''
+
     """
     # qcfiles path required for keep and extract (but not actually set below)
     regenie \
         --step 1 \
         --bed ${genotyped_plink_filename} \
-        --extract ${snplist} \
-        --keep ${id} \
+        $extract \
+        $keep \
         --phenoFile ${phenotypes_file} \
         --phenoColList  ${params.phenotypes_columns} \
         $covariants \
