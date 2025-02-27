@@ -53,7 +53,7 @@ workflow SINGLE_VARIANT_TESTS {
     }
 
     // AoU files are qc'ed and pruned
-    genotyped_final_ch = genotyped_plink_ch //Channel.empty()
+    genotyped_final_ch = genotyped_plink_ch.map{name, files -> tuple(name, files[1], files[0], files[2])}  //Channel.empty()
     genotyped_filtered_snplist_ch = [] //Channel.empty()
     genotyped_filtered_id_ch = [] // Channel.empty()
 
