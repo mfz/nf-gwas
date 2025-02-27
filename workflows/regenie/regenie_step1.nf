@@ -33,15 +33,15 @@ workflow REGENIE_STEP1 {
 
         genotyped_final_name_only_ch = genotyped_final_ch.map{it[0]}
 
-        REGENIE_STEP1_RUN_CHUNK (
-            chunks_ch,
+        chunks_ch.into{REGENIE_STEP1_RUN_CHUNK (
+            it,
             genotyped_final_name_only_ch, 
             genotyped_filtered_snplist_ch,
             genotyped_filtered_id_ch,
             phenotypes_file_validated,
             covariates_file_validated,
             condition_list_file
-        )
+        )}
 
         // build map from Y_n to phenotype name
         def phenotypesIndex = [:]
