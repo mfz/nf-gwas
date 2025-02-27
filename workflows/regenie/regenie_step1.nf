@@ -32,7 +32,13 @@ workflow REGENIE_STEP1 {
             .set { chunks_ch }
 
         REGENIE_STEP1_RUN_CHUNK (
-            chunks_ch
+            chunks_ch,
+            genotyped_final_ch,
+            genotyped_filtered_snplist_ch,
+            genotyped_filtered_id_ch,
+            phenotypes_file_validated,
+            covariates_file_validated,
+            condition_list_file
         )
 
         // build map from Y_n to phenotype name

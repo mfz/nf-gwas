@@ -53,7 +53,10 @@ workflow SINGLE_VARIANT_TESTS {
     }
 
     // AoU files are qc'ed and pruned
-    genotyped_final_ch = genotyped_plink_ch //Channel.empty()
+    // QUALITY_CONTROL emits val, path, path, path
+    // while fromFilePairs emits val, path
+    // so we need to map to bim, bed fam 
+    genotyped_final_ch = genotyped_plink_ch.map{name, files -> tuple(name, files[1], files[0], files[2])} //Channel.empty()
     genotyped_filtered_snplist_ch = [] //Channel.empty()
     genotyped_filtered_id_ch = [] // Channel.empty()
 

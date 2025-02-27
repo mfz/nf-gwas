@@ -28,6 +28,12 @@ process REGENIE_STEP1_RUN {
     def extract = snplist ? "--extract ${snplist}" : ''
     def keep = id ? "--keep ${id}" : ''
 
+    println "snplist: ${snplist}"
+    println "id: ${id}"
+    println "phenotypes_file: ${phenotypes_file}"
+    println "covariates_file: ${covariates_file}"
+    println "condition_list_file: ${condition_list_file}"
+
     """
     # qcfiles path required for keep and extract (but not actually set below)
     regenie \

@@ -9,7 +9,7 @@ process REGENIE_STEP1_SPLIT {
     path condition_list_file
 
     output:
-    tuple path("chunks.master"), path("chunks*.snplist"), val(genotyped_plink_filename), path(genotyped_plink_bim_file), path(genotyped_plink_bed_file), path(genotyped_plink_fam_file), path(snplist), path(id), path(phenotypes_file), path(covariates_file), path(condition_list_file), emit: chunks
+    tuple path("chunks.master"), path("chunks*.snplist"), emit: chunks
     path("chunks.master"), emit: master
 
     script:
