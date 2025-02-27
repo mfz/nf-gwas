@@ -33,7 +33,7 @@ workflow REGENIE_STEP1 {
 
         REGENIE_STEP1_RUN_CHUNK (
             chunks_ch,
-            genotyped_final_ch,
+            genotyped_final_ch.map{it[0]}, 
             genotyped_filtered_snplist_ch,
             genotyped_filtered_id_ch,
             phenotypes_file_validated,

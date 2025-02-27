@@ -3,13 +3,13 @@ process REGENIE_STEP1_RUN_CHUNK {
     publishDir "${params.pubDir}/logs", mode: 'copy', pattern: "chunks_job_${chunk}.log"
 
     input:
-    each tuple val(chunk), path(master), path(chunk_snpllist)
-    tuple val(genotyped_plink_filename), path(genotyped_plink_bim_file), path(genotyped_plink_bed_file), path(genotyped_plink_fam_file)  
-    path(snplist) 
-    path(id) 
-    path(phenotypes_file) 
-    path(covariates_file) 
-    path(condition_list_file)
+    tuple val(chunk), path(master), path(chunk_snpllist)
+    each val(genotyped_plink_filename)  
+    each path(snplist) 
+    each path(id) 
+    each path(phenotypes_file) 
+    each path(covariates_file) 
+    each path(condition_list_file)
 
     output:
     path "chunks_job${chunk}*", emit: regenie_step1_out
