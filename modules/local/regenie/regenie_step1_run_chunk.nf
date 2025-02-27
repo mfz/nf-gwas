@@ -4,12 +4,12 @@ process REGENIE_STEP1_RUN_CHUNK {
 
     input:
     tuple val(chunk), path(master), path(chunk_snpllist)
-    each val(genotyped_plink_filename)  
-    each path(snplist) 
-    each path(id) 
-    each path(phenotypes_file) 
-    each path(covariates_file) 
-    each path(condition_list_file)
+    val genotyped_plink_filename  
+    path(snplist) 
+    path(id) 
+    path(phenotypes_file) 
+    path(covariates_file) 
+    path(condition_list_file)
 
     output:
     path "chunks_job${chunk}*", emit: regenie_step1_out
