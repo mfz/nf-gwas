@@ -5,8 +5,8 @@ process REGENIE_STEP1_RUN_CHUNK {
     input:
     tuple val(chunk), path(master), path(chunk_snpllist)
     val genotyped_plink_filename  
-    path(snplist) 
-    path(id) 
+    //path(snplist) 
+    //path(id) 
     path(phenotypes_file) 
     path(covariates_file) 
     path(condition_list_file)
@@ -26,8 +26,8 @@ process REGENIE_STEP1_RUN_CHUNK {
     def condition_list = params.regenie_condition_list ? "--condition-list $condition_list_file" : ''
     def lowMemory = params.regenie_low_mem ? "--lowmem --lowmem-prefix tmp_rg" : ""
     def step1_optional = params.regenie_step1_optional  ? "$params.regenie_step1_optional":'' 
-    def extract = snplist ? "--extract ${snplist}" : ''
-    def keep = id ? "--keep ${id}" : ''
+    def extract = '' //snplist ? "--extract ${snplist}" : ''
+    def keep = '' //id ? "--keep ${id}" : ''
 
     """
     # qcfiles path required for keep and extract (but not actually set below)
