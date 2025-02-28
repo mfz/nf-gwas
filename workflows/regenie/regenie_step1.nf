@@ -31,11 +31,10 @@ workflow REGENIE_STEP1 {
             .combine(REGENIE_STEP1_SPLIT.out.chunks)
             .set { chunks_ch }
 
-        genotyped_final_name_only_ch = genotyped_final_ch.map{it[0]}.first()
 
         REGENIE_STEP1_RUN_CHUNK (
             chunks_ch,                                    // Channel with many elts
-            genotyped_final_name_only_ch,                 // Channel with 1 elt
+            genotyped_final_ch.first(),                 // Channel with 1 elt
             //genotyped_filtered_snplist_ch,              // []
             //genotyped_filtered_id_ch,                   // []
             phenotypes_file_validated.first(),                    // Channel with 1 elt
