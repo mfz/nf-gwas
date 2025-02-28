@@ -31,7 +31,7 @@ workflow REGENIE_STEP1 {
             .combine(REGENIE_STEP1_SPLIT.out.chunks)
             .set { chunks_ch }
 
-        genotyped_final_name = genotyped_final_ch.map{it[0]}.first()
+        genotyped_final_name_only_ch = genotyped_final_ch.map{it[0]}.first()
 
         REGENIE_STEP1_RUN_CHUNK (
             chunks_ch,                                    // Channel with many elts
