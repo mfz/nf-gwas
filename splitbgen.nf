@@ -9,18 +9,18 @@ process split_bgen {
     publishDir "${params.output_dir}", mode: 'move'
 
     input:
-    path bgen_file
+    tuple val(bgen_filename), path(bgen_files)
 
     output:
-    path "chr*_*_*.bgen"
+    path "${bgen_filename}_*_*.bgen"
 
     script:
     """
     # Extract chromosome info from the filename
-    chr=\$(basename ${bgen_file} .bgen)
+    chr="${bgen_filename}"
     
     # Determine total length using bgenix
-    total_length=\$(bgenix -g ${bgen_file} -list | awk 'NR==2 {print \$3}')
+    total_length=\$(bgenix -g ${bgen_filename}.bgen -list | awk 'NR==2 {print \$3}')
     
     # Split into chunks based on region_size
     start=1
@@ -29,7 +29,7 @@ process split_bgen {
         [ \$end -gt \$total_length ] && end=\$total_length
         
         output_file="\${chr}_\${start}_\${end}.bgen"
-        bgenix -g ${bgen_file} -incl-range chr\${chr}:\${start}-\${end} -og \${output_file}
+        bgenix -g ${bgen_filename}.bgen -incl-range chr\${chr}:\${start}-\${end} -og \${output_file}
         
         start=\$((end + 1))
     done
