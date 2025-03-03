@@ -12,10 +12,10 @@ process split_bgen {
     script:
     """
     # Extract chromosome info from the filename
-    chr=\$(basename ${bgen_file} .bgen | sed -E 's/.*chr([0-9]+).*/\1/')
+    chr=\$(basename ${bgen_file} .bgen | sed -E 's/.*chr([0-9]+).*/\\1/')
     
     # Determine total length using bgenix
-    total_length=\$(bgenix -g ${bgen_file} -list | awk 'NR==2 {print $3}')
+    total_length=\$(bgenix -g ${bgen_file} -list | awk 'NR==2 {print \$3}')
     
     # Split into chunks based on region_size
     start=1
