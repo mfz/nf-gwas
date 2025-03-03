@@ -68,4 +68,5 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
   | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
  && apt-get update -y \
  && apt-get install google-cloud-cli -y
-
+ 
+ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
