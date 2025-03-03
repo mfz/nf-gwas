@@ -59,6 +59,8 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     unzip awscliv2.zip && \
     ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 
+# Install Google Cloud SDK
+# is this needed, or does nextflow work without?
 RUN apt-get update -y \
  && apt-get install apt-transport-https ca-certificates gnupg2  -y
 
@@ -69,3 +71,4 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
  && apt-get update -y \
  && apt-get install google-cloud-cli -y
 
+ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
