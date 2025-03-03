@@ -1,6 +1,6 @@
 nextflow.enable.dsl=2
 
-params.bgen_dir = "gs://fc-aou-datasets-controlled/v8/wgs/short_read/snpindel/acaf_threshold/bgen/chr21.bgen"  // Input BGEN directory in GCS
+params.bgen_dir = "gs://fc-aou-datasets-controlled/v8/wgs/short_read/snpindel/acaf_threshold/bgen/chr21.{bgen,bgi}"  // Input BGEN directory in GCS
 params.output_dir = "${WORKSPACE_BUCKET}/split_bgen" // Output directory for split files
 params.region_size = 5000000 // Default chunk size (5Mb)
 
@@ -37,6 +37,6 @@ process split_bgen {
 } 
 
 workflow {
-    Channel.fromPath("${params.bgen_dir}")
+    Channel.fromFilePairs("${params.bgen_dir}")
         | split_bgen
 }
