@@ -37,6 +37,6 @@ process split_bgen {
 } 
 
 workflow {
-    Channel.fromPath("${params.bgen_dir}/*.bgen")
+    Channel.fromPath("${params.bgen_dir}")
         | split_bgen
 }
