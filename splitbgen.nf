@@ -12,15 +12,13 @@ process split_bgen {
     tuple val(bgen_filename), path(bgen_files)
 
     output:
-    path "${bgen_filename}_*_*.bgen"
+    path "*_*_*.bgen"
 
     script:
     """
     # Extract chromosome info from the filename
-    chr="${bgen_filename}"
-    
-    # Determine total length using bgenix
-    total_length=\$(bgenix -g ${bgen_filename}.bgen -list | awk 'NR==2 {print \$3}')
+    IFS="|"; read chr total_length < <(sqlite3 ${bgen_filename}.bgi 'select chromosome, max(position) from variant')
+ 
     
     # Split into chunks based on region_size
     start=1
@@ -29,7 +27,7 @@ process split_bgen {
         [ \$end -gt \$total_length ] && end=\$total_length
         
         output_file="\${chr}_\${start}_\${end}.bgen"
-        bgenix -g ${bgen_filename}.bgen -incl-range chr\${chr}:\${start}-\${end} -og \${output_file}
+        bgenix -g ${bgen_filename} -incl-range \${chr}:\${start}-\${end} > \${output_file}
         
         start=\$((end + 1))
     done
