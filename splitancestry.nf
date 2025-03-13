@@ -43,7 +43,7 @@ process qc_and_filter_array {
     def prune = params.prune_enabled ? "--indep-pairwise ${params.prune_window_kbsize} ${params.prune_step_size} ${params.prune_r2_threshold}" : ''
     def extract = params.prune_enabled ? '--extract qcfiltered.prune.in' : '--extract qcfiltered.snplist'
     """
-    awk '\$3==tolower("${ancestry}") {print \$1,\$2}' "${ancestry_file}" > keep.ids
+    awk '\$3==tolower("${ancestry}") {print 0,\$2}' "${ancestry_file}" > keep.ids
 
      plink2 \
      --bfile "${array_filename}" \
