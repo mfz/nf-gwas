@@ -1,7 +1,7 @@
 
-params.baseDir = "/home/jupyter/workspaces/gwasofbmieducationalproject"
-params.outDir = "/home/jupyter/workspaces/gwasofbmieducationalproject"
-params.genotypes_array = "${params.baseDir}/arrays.{bed,bim,fam}"
+params.baseDir = "${WORKSPACE_BUCKET}"
+params.outDir = "${WORKSPACE_BUCKET}"
+params.genotypes_array = "gs://fc-aou-datasets-controlled/v8/microarray/plink/arrays.{bed,bim,fam}"
 
 // tab-delimited file with columns FID, IID, ancestry
 params.ancestry_file = "${params.baseDir}/ancestry.tsv"
