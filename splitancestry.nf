@@ -22,8 +22,6 @@ params.qc_geno                               = 0.1
 params.qc_hwe                                = '1e-15'
 params.qc_mind                               = 0.1
 
-process.container = "${ARTIFACT_REGISTRY_DOCKER_REPO}/florianzink/nf-gwas-gcloud:v0.2"
-
 
 
 process qc_and_filter_array {
