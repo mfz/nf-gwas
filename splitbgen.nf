@@ -2,7 +2,7 @@ nextflow.enable.dsl=2
 
 params.bgen_dir = "gs://fc-aou-datasets-controlled/v8/wgs/short_read/snpindel/acaf_threshold/bgen/chr21.bgen{,.bgi}"  // Input BGEN directory in GCS
 params.output_dir = "${WORKSPACE_BUCKET}/split_bgen" // Output directory for split files
-params.region_size = 5000000 // Default chunk size (5Mb)
+params.chunk_size = 200000 
 
 process split_bgen {
 
@@ -16,20 +16,28 @@ process split_bgen {
 
     script:
     """
-    # Extract chromosome info from the filename
-    IFS="|"; read chr total_length < <(sqlite3 ${bgen_filename}.bgi 'select chromosome, max(position) from variant')
- 
+
+    sqlite3 -csv ${bgen_filename}.bgi "
+        WITH variant_ordered AS (
+        SELECT chromosome, position,
+           ROW_NUMBER() OVER (PARTITION BY chromosome ORDER BY position) AS row_num
+        FROM Variant
+        ),
+        chunked AS (
+        SELECT chromosome,
+           MIN(position) AS startpos,
+           MAX(position) AS endpos
+        FROM variant_ordered
+        GROUP BY chromosome, (row_num - 1) / ${params.chunk_size}
+        )
+        SELECT chromosome, startpos, endpos FROM chunked ORDER BY chromosome, startpos;" > chunks.csv
+
     
-    # Split into chunks based on region_size
-    start=1
-    while [ \$start -le \$total_length ]; do
-        end=\$((start + ${params.region_size} - 1))
-        [ \$end -gt \$total_length ] && end=\$total_length
-        
-        output_file="\${chr}_\${start}_\${end}.bgen"
-        bgenix -g ${bgen_filename} -incl-range \${chr}:\${start}-\${end} > \${output_file}
-        
-        start=\$((end + 1))
+    cat chunks.csv | while IFS=, read -r CHROM STARTPOS ENDPOS; do
+    OUTPUT_FILE="\${CHROM}_\${STARTPOS}_\${ENDPOS}.bgen"
+    
+    # Run bgenix to extract the chunk
+    bgenix -g "${bgen_filename}" -incl-range "\${CHROM}:\${STARTPOS}-\${ENDPOS}" > "\$OUTPUT_FILE"
     done
     """
 } 
