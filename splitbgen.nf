@@ -1,6 +1,6 @@
 nextflow.enable.dsl=2
 
-params.bgen_dir = "gs://fc-aou-datasets-controlled/v8/wgs/short_read/snpindel/acaf_threshold/bgen/chr21.bgen{,.bgi}"  // Input BGEN directory in GCS
+params.bgen_dir = "gs://fc-aou-datasets-controlled/v8/wgs/short_read/snpindel/acaf_threshold/bgen/chr*{.bgen,.bgen.bgi}"  // Input BGEN directory in GCS
 params.output_dir = "${WORKSPACE_BUCKET}/split_bgen" // Output directory for split files
 params.chunk_size = 200000 
 
@@ -17,7 +17,7 @@ process split_bgen {
     script:
     """
 
-    sqlite3 -csv ${bgen_filename}.bgi "
+    sqlite3 -csv ${bgen_filename}.bgen.bgi "
         WITH variant_ordered AS (
         SELECT chromosome, position,
            ROW_NUMBER() OVER (PARTITION BY chromosome ORDER BY position) AS row_num
@@ -37,7 +37,7 @@ process split_bgen {
     OUTPUT_FILE="\${CHROM}_\${STARTPOS}_\${ENDPOS}.bgen"
     
     # Run bgenix to extract the chunk
-    bgenix -g "${bgen_filename}" -incl-range "\${CHROM}:\${STARTPOS}-\${ENDPOS}" > "\$OUTPUT_FILE"
+    bgenix -g "${bgen_filename}.bgen" -incl-range "\${CHROM}:\${STARTPOS}-\${ENDPOS}" > "\$OUTPUT_FILE"
     done
     """
 } 
