@@ -1,6 +1,7 @@
 process REGENIE_STEP2_RUN {
 
     publishDir "${params.pubDir}/logs", mode: 'copy', pattern: '*.log'
+    publishDir "${params.pubDir}/dicts", mode: 'copy', pattern: '*.Ydict'
 
     tag "${plink2_pgen_file.simpleName}"
 
