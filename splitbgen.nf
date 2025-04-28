@@ -5,8 +5,8 @@ params.output_dir = "${WORKSPACE_BUCKET}/split_bgen" // Output directory for spl
 params.chunk_size = 200000 
 
 process split_bgen {
-    cpus 4
-    memory '8GB'
+    cpus 1
+    memory '2GB'
     disk '1000GB'
 
     publishDir "${params.output_dir}", mode: 'move'
