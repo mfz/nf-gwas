@@ -116,8 +116,9 @@ workflow GENE_BASED_TESTS {
             regenie_step1_parsed_logs_ch.collect().ifEmpty([]),
             regenie_step2_parsed_logs
     )
-}
 */
+}
+
 workflow.onComplete {
     println "Pipeline completed at: $workflow.complete"
     println "Execution status: ${ workflow.success ? 'OK' : 'failed' }"
