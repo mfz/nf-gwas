@@ -14,13 +14,13 @@ workflow REGENIE {
     imputed_plink2_ch
     genotypes_association_format
     run_interaction_tests
-    skip_interaction
+    skip_predictions
     gene_tests
 
     main:
     regenie_step1_parsed_logs_ch = Channel.empty()
     regenie_step1_out_ch = Channel.of('/')
-    if(!skip_interaction) {
+    if(!skip_predictions) {
         REGENIE_STEP1(
             genotyped_final_ch,
             genotyped_filtered_snplist_ch,
