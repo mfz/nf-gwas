@@ -60,11 +60,11 @@ workflow GENE_BASED_TESTS {
 
     }
 
-    genotyped_final_ch = Channel.empty()
+    genotyped_final_ch = genotyped_plink_ch.map{name, files -> tuple(name, files[1], files[0], files[2])}  //Channel.empty()
     genotyped_filtered_snplist_ch = Channel.empty()
     genotyped_filtered_id_ch = Channel.empty()
    
-    if (!skip_predictions) {
+    if (false) {
 
         QUALITY_CONTROL(genotyped_plink_ch)
         genotyped_final_ch = QUALITY_CONTROL.out.genotyped_filtered_files_ch
@@ -102,7 +102,7 @@ workflow GENE_BASED_TESTS {
     MERGE_RESULTS (
         regenie_step2_by_phenotype.groupTuple()
     )
-
+/*
     LIFT_OVER (
         MERGE_RESULTS.out.results_merged_regenie_only,
         association_build
@@ -117,7 +117,7 @@ workflow GENE_BASED_TESTS {
             regenie_step2_parsed_logs
     )
 }
-
+*/
 workflow.onComplete {
     println "Pipeline completed at: $workflow.complete"
     println "Execution status: ${ workflow.success ? 'OK' : 'failed' }"
