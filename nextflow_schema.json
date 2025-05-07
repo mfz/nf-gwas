@@ -427,7 +427,7 @@
       "default": "",
       "properties": {
         "regenie_gene_aaf": {
-          "type": "number",
+          "type": "string",
           "description": "Comma-separated list of AAF upper bounds to use when building masks",
           "fa_icon": "fas fa-project-diagram"
         },

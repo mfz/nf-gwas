@@ -60,9 +60,12 @@ workflow GENE_BASED_TESTS {
 
     }
 
+    imputed_plink2_ch.view()
+
     genotyped_final_ch = genotyped_plink_ch.map{name, files -> tuple(name, files[1], files[0], files[2])}  //Channel.empty()
-    genotyped_filtered_snplist_ch = Channel.empty()
-    genotyped_filtered_id_ch = Channel.empty()
+    genotyped_final_ch.view()
+    genotyped_filtered_snplist_ch = [] //Channel.empty()
+    genotyped_filtered_id_ch = [] //Channel.empty()
    
     if (false) {
 

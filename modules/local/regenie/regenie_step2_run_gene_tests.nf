@@ -58,6 +58,7 @@ process REGENIE_STEP2_RUN_GENE_TESTS {
         --gz \
         --check-burden-files \
         --write-mask-snplist \
+	$refFirst \
         $writeMasks \
         $binaryTrait \
         $covariants \
